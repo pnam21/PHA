@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 namespace PHA.Controllers
 {
-    public class RegisterController : Controller
+    public class Register : Controller
     {
+        [Route("Register")]
         public IActionResult Index()
         {
-            return View();
+            return View("Register");
         }
     }
 }
