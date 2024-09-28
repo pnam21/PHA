@@ -20,15 +20,26 @@ namespace PHA.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User user)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Login");
+                return View(user);
             }
             return View(user);
-        }
+			try
+			{
+				_context.Users.Add(user);
+				await _context.SaveChangesAsync(); // Lưu vào database
+
+				return RedirectToAction("login"); // Điều hướng tới trang đăng nhập
+			}
+			catch (Exception ex)
+			{
+				// Log lỗi nếu có (có thể ghi vào console hoặc file log)
+				Console.WriteLine(ex.Message);
+				ModelState.AddModelError("", "Có lỗi xảy ra, vui lòng thử lại!"); // Thêm lỗi vào ModelState
+				return View(user); // Trả lại view với thông báo lỗi
+			}
+		}
     }
 }
 
