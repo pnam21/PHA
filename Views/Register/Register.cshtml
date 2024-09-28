@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+@model PHA.Models.User
+@using PHA.Controllers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -14,59 +17,58 @@
 </head>
 
 <body>
-    <form id="register-form" method="post" >
+    <form id="register-form" method="post" onsubmit="form_check_and_submit()">
         <div class="container">
             <h1>PHA Register Section</h1>
-            <label for="fullname"><b>Fullname *</b></label>
+            <label for="Fullname"><b>Fullname *</b></label>
             <input type="text"
+                   class="form-control"
                    placeholder="Enter Fullname"
-                   name="display_name"
-                   id="fullname"
+                   id="Fullname"
+                   name="Fullname"
+                   value="@Model?.Fullname"
                    required />
 
-            <label for="username"><b>Username *</b></label>
+            <label for="Username"><b>Username *</b></label>
             <input type="text"
-                   placeholder="Enter username"
-                   name="username"
-                   id="username"
+                   class="form-control"
+                   placeholder="Enter Username"
+                   id="Username"
+                   name="Username"
+                   value="@Model?.Username"
                    required />
 
-            <label for="email"><b>Email</b></label>
-            <input type="text"
+            <label for="Email"><b>Email</b></label>
+            <input type="email"
+                   class="form-control"
                    placeholder="Enter Email"
                    name="email"
-                   id="email" />
+                   id="email" 
+                   value="@Model?.Email"/>
 
             <label for="number"><b>Phone Number</b></label>
             <input type="text"
+                   class="form-control"
                    placeholder="Enter Phone Number"
                    name="telephone"
-                   id="number" />
-
-            <label for="address"><b>Address</b></label>
-            <input type="text"
-                   placeholder="Enter Address"
-                   name="address"
-                   id="address" />
+                   id="number"
+                   value="@Model?.phoneNumber" />
 
             <label for="pwd"><b>Password *</b></label>
             <input type="password"
+                   class="form-control"
                    placeholder="Enter Password"
                    name="password"
                    id="pwd"
+                   value="@Model?.Password"
                    required />
-
-            <label for="pwd-repeat"><b>Repeat Password *</b></label>
-            <input type="password"
-                   placeholder="Repeat Password"
-                   name="password_repeat"
-                   id="pwd-repeat"
-                   required />
-            <button type="button" >Register</button>
+            <button type="submit" onclick="form_check_and_submit()">Register</button>
         </div>
     </form>
     <div>
-        <p>Already have an account? <a href="">Log in</a>.</p>
+        <p>Already have an account? <a href="./login">Log in</a>.</p>
     </div>
+
+    <script src="~/js/register.js"></script>
 </body>
 </html>
