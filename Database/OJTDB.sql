@@ -1,15 +1,16 @@
-CREAT DATABASE [OJTDB]
+USE [master]
+GO
+/****** Object:  Database [OJTDB]    Script Date: 9/30/2024 1:45:31 AM ******/
+CREATE DATABASE [OJTDB]
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'OJTDB', FILENAME = N'D:\OJTDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
 ( NAME = N'OJTDB_log', FILENAME = N'D:\OJTDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
- WITH CATALOG_COLLATION = DATABASE_DEFAULT
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
 GO
 ALTER DATABASE [OJTDB] SET COMPATIBILITY_LEVEL = 150
 GO
-
-
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
 EXEC [OJTDB].[dbo].[sp_fulltext_database] @action = 'enable'
@@ -75,304 +76,386 @@ ALTER DATABASE [OJTDB] SET DELAYED_DURABILITY = DISABLED
 GO
 ALTER DATABASE [OJTDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
 GO
+EXEC sys.sp_db_vardecimal_storage_format N'OJTDB', N'ON'
+GO
 ALTER DATABASE [OJTDB] SET QUERY_STORE = OFF
 GO
-
-
 USE [OJTDB]
 GO
-
-/*** USER, ROLE ***/
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 9/30/2024 1:45:32 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[User](
-	[user_id] [INT] IDENTITY(1,1) NOT NULL,
-	[username] [VARCHAR](100) NULL,
-	[password] [VARCHAR](255) NULL,
-	[email] [VARCHAR](255) NULL,
-	[fullname] [VARCHAR](255) NULL,
-	[phone_number] [VARCHAR](15) NULL,
-    /*[created_at] DATETIME DEFAULT CURRENT_TIMESTAMP,
-    [updated_at] DATETIME ON UPDATE CURRENT_TIMESTAMP,*/
-
-	CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
-	(
-	[user_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
+/****** Object:  Table [dbo].[Assignments]    Script Date: 9/30/2024 1:45:32 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[User_Role](
-	[user_id] [INT] NOT NULL,
-	[role_id] [INT] NOT NULL,
-)
+CREATE TABLE [dbo].[Assignments](
+	[assignment_id] [int] IDENTITY(1,1) NOT NULL,
+	[lecture_id] [int] NULL,
+	[title] [varchar](255) NOT NULL,
+	[description] [text] NULL,
+	[due_date] [datetime] NULL,
+ CONSTRAINT [PK_Assignments] PRIMARY KEY CLUSTERED 
+(
+	[assignment_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
-CREATE TABLE [dbo].[Role](					/* Student, instructor, admin */
-	[role_id] [INT] IDENTITY(1,1) NOT NULL,
-	[role_name] [VARCHAR](255) NULL UNIQUE,
-
-	CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
-	(
-	[role_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+/****** Object:  Table [dbo].[Categories]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[category_id] [int] IDENTITY(1,1) NOT NULL,
+	[category_name] [varchar](255) NOT NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[category_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-ALTER TABLE [dbo].[User_Role]  WITH CHECK  ADD CONSTRAINT [FK_UserID_Role] FOREIGN KEY([user_id])
-REFERENCES [dbo].[User] ([user_id])
-ON DELETE CASCADE
+/****** Object:  Table [dbo].[Comments]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
 GO
-
-ALTER TABLE [dbo].[User_Role]  WITH CHECK  ADD CONSTRAINT [FK_RoleID_Role] FOREIGN KEY([role_id])
-REFERENCES [dbo].[Role] ([role_id])
-ON DELETE CASCADE
+SET QUOTED_IDENTIFIER ON
 GO
-
-/*** COURSES, CATEGORIES, LECTURES (BÀI GIẢNG), ASSIGNMENT ***/
+CREATE TABLE [dbo].[Comments](
+	[comment_id] [int] IDENTITY(1,1) NOT NULL,
+	[lecture_id] [int] NULL,
+	[user_id] [nvarchar](50) NULL,
+	[content] [text] NOT NULL,
+ CONSTRAINT [PK_Comments] PRIMARY KEY CLUSTERED 
+(
+	[comment_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CourseProgress]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CourseProgress](
+	[progress_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [nvarchar](50) NULL,
+	[course_id] [int] NULL,
+	[completed_lectures] [int] NULL,
+	[completion_status] [int] NULL,
+ CONSTRAINT [PK_CourseProgress] PRIMARY KEY CLUSTERED 
+(
+	[progress_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Courses]    Script Date: 9/30/2024 1:45:32 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Courses](
-	[course_id] [INT] IDENTITY(1,1) NOT NULL,
-	[course_name]	[VARCHAR](255),
-	[description] [TEXT],
-    [instructor_id] [INT],
-    [category_id] [INT],
-    [start_date] [DATE],
-    [end_date] [DATE],
-    /*[created_at] DATETIME DEFAULT CURRENT_TIMESTAMP,
-    [updated_at] DATETIME ON UPDATE CURRENT_TIMESTAMP,*/
-
-	CONSTRAINT [PK_Courses] PRIMARY KEY CLUSTERED 
-	(
+	[course_id] [int] IDENTITY(1,1) NOT NULL,
+	[course_name] [varchar](255) NULL,
+	[description] [text] NULL,
+	[instructor_id] [int] NULL,
+	[category_id] [int] NULL,
+	[start_date] [date] NULL,
+	[end_date] [date] NULL,
+ CONSTRAINT [PK_Courses] PRIMARY KEY CLUSTERED 
+(
 	[course_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Enrollments]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Enrollments](
+	[enrollment_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [nvarchar](50) NULL,
+	[course_id] [int] NULL,
+	[status_id] [int] NULL,
+ CONSTRAINT [PK_Enrollments] PRIMARY KEY CLUSTERED 
+(
+	[enrollment_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-CREATE TABLE [dbo].[Categories] (
-    category_id [INT] IDENTITY(1,1) NOT NULL,
-    category_name [VARCHAR](255) NOT NULL UNIQUE,
-
-	CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
-	(
-	[category_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+/****** Object:  Table [dbo].[Lectures]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Lectures](
+	[lecture_id] [int] IDENTITY(1,1) NOT NULL,
+	[course_id] [int] NULL,
+	[title] [varchar](255) NOT NULL,
+	[content] [text] NULL,
+	[video_url] [varchar](255) NULL,
+ CONSTRAINT [PK_Lectures] PRIMARY KEY CLUSTERED 
+(
+	[lecture_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[News]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[News](
+	[news_id] [int] IDENTITY(1,1) NOT NULL,
+	[title] [varchar](255) NOT NULL,
+	[content] [text] NULL,
+	[created_by] [nvarchar](50) NULL,
+ CONSTRAINT [PK_News] PRIMARY KEY CLUSTERED 
+(
+	[news_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[QnA]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[QnA](
+	[qna_id] [int] IDENTITY(1,1) NOT NULL,
+	[course_id] [int] NULL,
+	[user_id] [nvarchar](50) NULL,
+	[question] [text] NOT NULL,
+	[answer] [text] NULL,
+	[created_at] [datetime] NULL,
+	[answered_at] [datetime] NULL,
+ CONSTRAINT [PK_QnA] PRIMARY KEY CLUSTERED 
+(
+	[qna_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[role_id] [int] IDENTITY(1,1) NOT NULL,
+	[role_name] [varchar](255) NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+(
+	[role_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-ALTER TABLE [dbo].[Courses]  WITH CHECK  ADD CONSTRAINT [FK_CoursesCategory] FOREIGN KEY([category_id])
+/****** Object:  Table [dbo].[Status]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Status](
+	[status_id] [int] IDENTITY(1,1) NOT NULL,
+	[status_name] [varchar](255) NULL,
+ CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
+(
+	[status_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Submissions]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Submissions](
+	[submission_id] [int] IDENTITY(1,1) NOT NULL,
+	[assignment_id] [int] NULL,
+	[user_id] [nvarchar](50) NULL,
+	[file_path] [varchar](255) NULL,
+	[grade] [decimal](5, 2) NULL,
+	[feedback] [text] NULL,
+ CONSTRAINT [PK_Submissions] PRIMARY KEY CLUSTERED 
+(
+	[submission_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[User]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[User](
+	[user_id] [nvarchar](50) NOT NULL,
+	[username] [nvarchar](100) NULL,
+	[password] [nvarchar](255) NULL,
+	[email] [nvarchar](255) NULL,
+	[fullname] [nvarchar](255) NULL,
+	[phone_number] [nvarchar](50) NULL,
+ CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[User_Role]    Script Date: 9/30/2024 1:45:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[User_Role](
+	[user_id] [nvarchar](50) NOT NULL,
+	[role_id] [int] NOT NULL
+) ON [PRIMARY]
+GO
+INSERT [dbo].[User] ([user_id], [username], [password], [email], [fullname], [phone_number]) VALUES (N'1', N'n21', N'nhatnam2112', N'phamnamcwd@gmail.com', N'Pham Nhat Nam', N'0919024219')
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Categori__5189E255DA26611E]    Script Date: 9/30/2024 1:45:32 AM ******/
+ALTER TABLE [dbo].[Categories] ADD UNIQUE NONCLUSTERED 
+(
+	[category_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Role__783254B171A09778]    Script Date: 9/30/2024 1:45:32 AM ******/
+ALTER TABLE [dbo].[Role] ADD UNIQUE NONCLUSTERED 
+(
+	[role_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Status__501B3753FE4E630C]    Script Date: 9/30/2024 1:45:32 AM ******/
+ALTER TABLE [dbo].[Status] ADD UNIQUE NONCLUSTERED 
+(
+	[status_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CourseProgress] ADD  CONSTRAINT [DF__CoursePro__compl__5629CD9C]  DEFAULT ((0)) FOR [completed_lectures]
+GO
+ALTER TABLE [dbo].[CourseProgress] ADD  CONSTRAINT [DF__CoursePro__compl__571DF1D5]  DEFAULT ((0)) FOR [completion_status]
+GO
+ALTER TABLE [dbo].[QnA] ADD  CONSTRAINT [DF__QnA__created_at__5BE2A6F2]  DEFAULT (getdate()) FOR [created_at]
+GO
+ALTER TABLE [dbo].[Assignments]  WITH CHECK ADD  CONSTRAINT [FK_AssignmentsLectures] FOREIGN KEY([lecture_id])
+REFERENCES [dbo].[Lectures] ([lecture_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Assignments] CHECK CONSTRAINT [FK_AssignmentsLectures]
+GO
+ALTER TABLE [dbo].[Comments]  WITH CHECK ADD  CONSTRAINT [FK_CommentsLectures] FOREIGN KEY([lecture_id])
+REFERENCES [dbo].[Lectures] ([lecture_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Comments] CHECK CONSTRAINT [FK_CommentsLectures]
+GO
+ALTER TABLE [dbo].[Comments]  WITH CHECK ADD  CONSTRAINT [FK_CommentsUser] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([user_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Comments] CHECK CONSTRAINT [FK_CommentsUser]
+GO
+ALTER TABLE [dbo].[CourseProgress]  WITH CHECK ADD  CONSTRAINT [FK_CourseProgressCourses] FOREIGN KEY([course_id])
+REFERENCES [dbo].[Courses] ([course_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CourseProgress] CHECK CONSTRAINT [FK_CourseProgressCourses]
+GO
+ALTER TABLE [dbo].[CourseProgress]  WITH CHECK ADD  CONSTRAINT [FK_CourseProgressUser] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([user_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CourseProgress] CHECK CONSTRAINT [FK_CourseProgressUser]
+GO
+ALTER TABLE [dbo].[Courses]  WITH CHECK ADD  CONSTRAINT [FK_CoursesCategory] FOREIGN KEY([category_id])
 REFERENCES [dbo].[Categories] ([category_id])
 ON DELETE CASCADE
 GO
-
-CREATE TABLE [dbo].[Enrollments] (
-    [enrollment_id] [INT] IDENTITY(1,1) NOT NULL,
-    [user_id] [INT],
-    [course_id] [INT],
-	[status_id] [INT],
-    /*enrolled_at DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-
-	CONSTRAINT [PK_Enrollments] PRIMARY KEY CLUSTERED 
-	(
-	[enrollment_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[Courses] CHECK CONSTRAINT [FK_CoursesCategory]
 GO
-
-ALTER TABLE [dbo].[Enrollments]  WITH CHECK  ADD CONSTRAINT [FK_EnrollCourse] FOREIGN KEY([course_id])
+ALTER TABLE [dbo].[Enrollments]  WITH CHECK ADD  CONSTRAINT [FK_EnrollCourse] FOREIGN KEY([course_id])
 REFERENCES [dbo].[Courses] ([course_id])
 ON DELETE CASCADE
 GO
-
-ALTER TABLE [dbo].[Enrollments]  WITH CHECK  ADD CONSTRAINT [FK_EnrollUser] FOREIGN KEY([user_id])
-REFERENCES [dbo].[User] ([user_id])
-ON DELETE CASCADE
+ALTER TABLE [dbo].[Enrollments] CHECK CONSTRAINT [FK_EnrollCourse]
 GO
-
-CREATE TABLE [dbo].[Status](					/* Enrolled, Completed, Dropped */
-	[status_id] [INT] IDENTITY(1,1) NOT NULL,
-	[status_name] [VARCHAR](255) NULL UNIQUE,
-
-	CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
-	(
-	[status_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[Enrollments]  WITH CHECK  ADD CONSTRAINT [FK_EnrollStatus] FOREIGN KEY([status_id])
+ALTER TABLE [dbo].[Enrollments]  WITH CHECK ADD  CONSTRAINT [FK_EnrollStatus] FOREIGN KEY([status_id])
 REFERENCES [dbo].[Status] ([status_id])
 ON DELETE CASCADE
 GO
-
-CREATE TABLE [Lectures] (
-    [lecture_id] [INT] IDENTITY(1,1) NOT NULL,
-    [course_id] [INT],
-    [title] [VARCHAR](255) NOT NULL,
-    [content] [TEXT],
-    [video_url] [VARCHAR](255),
-    /*created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,*/
-
-    CONSTRAINT [PK_Lectures] PRIMARY KEY CLUSTERED 
-	(
-	[lecture_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[Enrollments] CHECK CONSTRAINT [FK_EnrollStatus]
 GO
-
-ALTER TABLE [dbo].[Lectures]  WITH CHECK  ADD CONSTRAINT [FK_LecturesCourses] FOREIGN KEY([course_id])
+ALTER TABLE [dbo].[Enrollments]  WITH CHECK ADD  CONSTRAINT [FK_EnrollUser] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([user_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Enrollments] CHECK CONSTRAINT [FK_EnrollUser]
+GO
+ALTER TABLE [dbo].[Lectures]  WITH CHECK ADD  CONSTRAINT [FK_LecturesCourses] FOREIGN KEY([course_id])
 REFERENCES [dbo].[Courses] ([course_id])
 ON DELETE CASCADE
 GO
-
-CREATE TABLE [Assignments] (
-    [assignment_id] [INT] IDENTITY(1,1) NOT NULL,
-    [lecture_id] [INT],
-    [title] [VARCHAR](255) NOT NULL,
-    [description] [TEXT],
-    [due_date] [DATETIME],
-    /*created_at DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-
-    CONSTRAINT [PK_Assignments] PRIMARY KEY CLUSTERED 
-	(
-	[assignment_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[Lectures] CHECK CONSTRAINT [FK_LecturesCourses]
 GO
-
-ALTER TABLE [dbo].[Assignments]  WITH CHECK  ADD CONSTRAINT [FK_AssignmentsLectures] FOREIGN KEY([lecture_id])
-REFERENCES [dbo].[Lectures] ([lecture_id])
+ALTER TABLE [dbo].[News]  WITH CHECK ADD  CONSTRAINT [FK_NewsProgressUser] FOREIGN KEY([created_by])
+REFERENCES [dbo].[User] ([user_id])
 ON DELETE CASCADE
 GO
-
-CREATE TABLE [Submissions] (
-    [submission_id] [INT] IDENTITY(1,1) NOT NULL,
-    [assignment_id] [INT],
-    [user_id] [INT],
-    [file_path] [VARCHAR](255),
-    [grade] [DECIMAL](5, 2),
-    /*submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-    [feedback] [TEXT],
-    
-	CONSTRAINT [PK_Submissions] PRIMARY KEY CLUSTERED 
-	(
-	[submission_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[News] CHECK CONSTRAINT [FK_NewsProgressUser]
 GO
-
-ALTER TABLE [dbo].[Submissions]  WITH CHECK  ADD CONSTRAINT [FK_SubmissionsAssignments] FOREIGN KEY([assignment_id])
+ALTER TABLE [dbo].[QnA]  WITH CHECK ADD  CONSTRAINT [FK_QnACourses] FOREIGN KEY([course_id])
+REFERENCES [dbo].[Courses] ([course_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[QnA] CHECK CONSTRAINT [FK_QnACourses]
+GO
+ALTER TABLE [dbo].[QnA]  WITH CHECK ADD  CONSTRAINT [FK_QnAProgressUser] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([user_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[QnA] CHECK CONSTRAINT [FK_QnAProgressUser]
+GO
+ALTER TABLE [dbo].[Submissions]  WITH CHECK ADD  CONSTRAINT [FK_SubmissionsAssignments] FOREIGN KEY([assignment_id])
 REFERENCES [dbo].[Assignments] ([assignment_id])
 ON DELETE CASCADE
 GO
-
-ALTER TABLE [dbo].[Submissions]  WITH CHECK  ADD CONSTRAINT [FK_SubmissionsUser] FOREIGN KEY([user_id])
+ALTER TABLE [dbo].[Submissions] CHECK CONSTRAINT [FK_SubmissionsAssignments]
+GO
+ALTER TABLE [dbo].[Submissions]  WITH CHECK ADD  CONSTRAINT [FK_SubmissionsUser] FOREIGN KEY([user_id])
 REFERENCES [dbo].[User] ([user_id])
 ON DELETE CASCADE
 GO
-
-CREATE TABLE [CourseProgress] (
-    [progress_id] [INT] IDENTITY(1,1) NOT NULL,
-    [user_id] [INT],
-    [course_id] [INT],
-    [completed_lectures] [INT] DEFAULT 0,
-    [completion_status] [INT] DEFAULT 0, /*[ENUM]('in_progress', 'completed') DEFAULT 'in_progress',*/				/* In_progress, complete */
-    /*last_accessed DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-	
-	CONSTRAINT [PK_CourseProgress] PRIMARY KEY CLUSTERED 
-	(
-	[progress_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[Submissions] CHECK CONSTRAINT [FK_SubmissionsUser]
 GO
-
-ALTER TABLE [dbo].[CourseProgress]  WITH CHECK  ADD CONSTRAINT [FK_CourseProgressCourses] FOREIGN KEY([course_id])
-REFERENCES [dbo].[Courses] ([course_id])
+ALTER TABLE [dbo].[User_Role]  WITH CHECK ADD  CONSTRAINT [FK_RoleID_Role] FOREIGN KEY([role_id])
+REFERENCES [dbo].[Role] ([role_id])
 ON DELETE CASCADE
 GO
-
-ALTER TABLE [dbo].[CourseProgress]  WITH CHECK  ADD CONSTRAINT [FK_CourseProgressUser] FOREIGN KEY([user_id])
+ALTER TABLE [dbo].[User_Role] CHECK CONSTRAINT [FK_RoleID_Role]
+GO
+ALTER TABLE [dbo].[User_Role]  WITH CHECK ADD  CONSTRAINT [FK_UserID_Role] FOREIGN KEY([user_id])
 REFERENCES [dbo].[User] ([user_id])
 ON DELETE CASCADE
 GO
-
-/* QnA, News, Comments */
-CREATE TABLE [QnA] (
-    [qna_id] [INT] IDENTITY(1,1) NOT NULL,
-    [course_id] [INT],
-    [user_id] [INT],
-    [question] [TEXT] NOT NULL,
-    [answer] [TEXT],
-    [created_at] [DATETIME] DEFAULT CURRENT_TIMESTAMP,
-    [answered_at] [DATETIME],
-    
-	CONSTRAINT [PK_QnA] PRIMARY KEY CLUSTERED 
-	(
-	[qna_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[User_Role] CHECK CONSTRAINT [FK_UserID_Role]
 GO
-
-ALTER TABLE [dbo].[QnA]  WITH CHECK  ADD CONSTRAINT [FK_QnACourses] FOREIGN KEY([course_id])
-REFERENCES [dbo].[Courses] ([course_id])
-ON DELETE CASCADE
+USE [master]
 GO
-
-ALTER TABLE [dbo].[QnA]  WITH CHECK  ADD CONSTRAINT [FK_QnAProgressUser] FOREIGN KEY([user_id])
-REFERENCES [dbo].[User] ([user_id])
-ON DELETE CASCADE
-GO
-
-CREATE TABLE [News] (
-    [news_id] [INT] IDENTITY(1,1) NOT NULL,
-    [title] [VARCHAR](255) NOT NULL,
-    [content] [TEXT],
-    [created_by] [INT],	
-    /*created_at DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-	
-	CONSTRAINT [PK_News] PRIMARY KEY CLUSTERED 
-	(
-	[news_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[News]  WITH CHECK  ADD CONSTRAINT [FK_NewsProgressUser] FOREIGN KEY([created_by])
-REFERENCES [dbo].[User] ([user_id])
-ON DELETE CASCADE
-GO
-
-
-CREATE TABLE [Comments] (
-    [comment_id] [INT] IDENTITY(1,1) NOT NULL,
-    [lecture_id] [INT],
-    [user_id] [INT],
-    [content] [TEXT] NOT NULL,
-    /*[created_at] DATETIME DEFAULT CURRENT_TIMESTAMP,*/
-
-	CONSTRAINT [PK_Comments] PRIMARY KEY CLUSTERED 
-	(
-	[comment_id] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[Comments]  WITH CHECK  ADD CONSTRAINT [FK_CommentsLectures] FOREIGN KEY([lecture_id])
-REFERENCES [dbo].[Lectures] ([lecture_id])
-ON DELETE CASCADE
-GO
-
-ALTER TABLE [dbo].[Comments]  WITH CHECK  ADD CONSTRAINT [FK_CommentsUser] FOREIGN KEY([user_id])
-REFERENCES [dbo].[User] ([user_id])
-ON DELETE CASCADE
+ALTER DATABASE [OJTDB] SET  READ_WRITE 
 GO

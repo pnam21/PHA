@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PHA.Database;
 namespace PHA
 {
     public class Program
@@ -6,6 +9,10 @@ namespace PHA
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //connected db
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
