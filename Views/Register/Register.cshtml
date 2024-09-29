@@ -1,4 +1,4 @@
-﻿@model PHA.Models.User
+﻿@model PHA.Models.AppUserModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +24,6 @@
                    placeholder="Enter Fullname"
                    id="Fullname"
                    name="Fullname"
-                   value="@Model?.Fullname"
                    required />
 
             <label for="Username"><b>Username *</b></label>
@@ -33,7 +32,6 @@
                    placeholder="Enter Username"
                    id="Username"
                    name="Username"
-                   value="@Model?.Username"
                    required />
 
             <label for="Email"><b>Email</b></label>
@@ -42,7 +40,7 @@
                    placeholder="Enter Email"
                    name="email"
                    id="email" 
-                   value="@Model?.Email"/>
+                   required />
 
             <label for="number"><b>Phone Number</b></label>
             <input type="text"
@@ -50,15 +48,13 @@
                    placeholder="Enter Phone Number"
                    name="telephone"
                    id="number"
-                   value="@Model?.phoneNumber" />
-
+                   required />
             <label for="pwd"><b>Password *</b></label>
             <input type="password"
                    class="form-control"
                    placeholder="Enter Password"
                    name="password"
                    id="pwd"
-                   value="@Model?.Password"
                    required />
             <button type="submit" onclick="form_check_and_submit()">Register</button>
         </div>
