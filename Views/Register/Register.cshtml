@@ -1,68 +1,60 @@
-﻿@model PHA.Models.AppUserModel
+﻿@model PHA.Models.User
+@using PHA.Controllers
+@{
+    Layout = "_Layout";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
     <link rel="stylesheet" href="~/css/register.css">
-    <title>RegisterController</title>
-    <style>
-        body {
-            background-color: black;
-        }
-    </style>
+
 </head>
 
 <body>
-    <form id="register-form" method="post" onsubmit="form_check_and_submit()">
-        <div class="container">
-            <h1>PHA Register Section</h1>
-            <label for="Fullname"><b>Fullname *</b></label>
-            <input type="text"
-                   class="form-control"
-                   placeholder="Enter Fullname"
-                   id="Fullname"
-                   name="Fullname"
-                   required />
+    <form action="Register" method="post" class="form-horizontal" role="form">
+        
+        <h3>PHA_SIGNUP</h3>
+        <div class="form-group">
+            <label for="FullName" class="control-label">Full Name</label>
+            <input type="text" id="FullName" name="FullName" class="form-control" required />
+            <span class="text-danger" id="FullNameError"></span>
+        </div>
 
-            <label for="Username"><b>Username *</b></label>
-            <input type="text"
-                   class="form-control"
-                   placeholder="Enter Username"
-                   id="Username"
-                   name="Username"
-                   required />
+        <div class="form-group">
+            <label for="Username" class="control-label">Username</label>
+            <input type="text" id="Username" name="Username" class="form-control" required />
+            <span class="text-danger" id="UsernameError"></span>
+        </div>
 
-            <label for="Email"><b>Email</b></label>
-            <input type="email"
-                   class="form-control"
-                   placeholder="Enter Email"
-                   name="email"
-                   id="email" 
-                   required />
+        <div class="form-group">
+            <label for="Password" class="control-label">Password</label>
+            <input type="password" id="Password" name="Password" class="form-control" required />
+            <span class="text-danger" id="PasswordError"></span>
+        </div>
 
-            <label for="number"><b>Phone Number</b></label>
-            <input type="text"
-                   class="form-control"
-                   placeholder="Enter Phone Number"
-                   name="telephone"
-                   id="number"
-                   required />
-            <label for="pwd"><b>Password *</b></label>
-            <input type="password"
-                   class="form-control"
-                   placeholder="Enter Password"
-                   name="password"
-                   id="pwd"
-                   required />
-            <button type="submit" onclick="form_check_and_submit()">Register</button>
+        <div class="form-group">
+            <label for="PhoneNumber" class="control-label">Phone Number</label>
+            <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required />
+            <span class="text-danger" id="PhoneNumberError"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="control-label">Email</label>
+            <input type="email" id="Email" name="Email" class="form-control" required />
+            <span class="text-danger" id="EmailError"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Sign Up" class="btn btn-primary" />
         </div>
     </form>
     <div>
         <p>Already have an account? <a href="./login">Log in</a>.</p>
     </div>
 
-    <script src="~/js/register.js"></script>
 </body>
 </html>

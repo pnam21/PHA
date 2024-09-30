@@ -5,12 +5,14 @@ using PHA.Models;
 namespace PHA.Repository
 {
 
-	public class DataContext : IdentityDbContext<AppUserModel>
+	public class DataContext : DbContext
 	{
-		public DataContext(DbContextOptions<DataContext> options) : base(options) 
+        
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options) 
 		{
 		}
-		public DbSet<AppUserModel> User { get; set; }
+		public DbSet<User> Users { get; set; }
 
 	}
 }
