@@ -11,20 +11,20 @@ namespace PHA.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     user_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone_Number = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.user_id);
+                    table.PrimaryKey("PK_Users", x => x.user_id);
                 });
         }
 
@@ -32,7 +32,7 @@ namespace PHA.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }

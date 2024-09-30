@@ -1,52 +1,90 @@
-﻿﻿body {
-    font-family: Arial, Helvetica, sans-serif;
-    overflow: scroll;
-}
-
-form {
+﻿body {
+    background-color: #f4f4f9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+}
+form {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; 
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 25vw;
-}
-
-h1, p, b, a {
+h3 {
     text-align: center;
-    color: white;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-input {
-    margin: 0.25em 0em 1em 0em;
-    outline: none;
-    padding: 0.5em;
-    border: none;
-    background-color: rgb(225, 225, 225);
-    border-radius: 0.25em;
-    color: black;
+.form-group {
+    margin-bottom: 15px;
 }
 
-button {
-    padding: 0.75em;
-    border: none;
-    outline: none;
-    background-color: rgb(68, 18, 232);
-    color: white;
-    border-radius: 0.25em;
+label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
 }
 
-    button:hover {
-        cursor: pointer;
-        background-color: rgb(41, 4, 164);
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+        border-color: #007bff;
+        outline: none;
     }
 
+.btn-primary {
+    width: 100%;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
 
-@media only screen and (max-width: 600px) {
-    .container {
-        width: 90%;
+    .btn-primary:hover {
+        background-color: #218838;
     }
+
+p {
+    text-align: center;
+    margin-top: 15px;
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    a:hover {
+        color: #0056b3;
+    }
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.875em;
 }

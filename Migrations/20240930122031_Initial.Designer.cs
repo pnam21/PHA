@@ -11,7 +11,7 @@ using PHA.Repository;
 namespace PHA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240929132622_Initial")]
+    [Migration("20240930122031_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace PHA.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PHA.Models.UserModel", b =>
+            modelBuilder.Entity("PHA.Models.User", b =>
                 {
                     b.Property<int>("user_id")
                         .ValueGeneratedOnAdd()
@@ -32,29 +32,29 @@ namespace PHA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("user_id"));
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("fullname")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("phone_Number")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("username")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("user_id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
