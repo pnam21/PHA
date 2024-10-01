@@ -7,7 +7,7 @@ namespace PHA.Controllers
 	{
 		[Route("login")]
 		[HttpGet]
-		public IActionResult Index()
+		public IActionResult LoginPage()
 		{
 			return View("Login");
 		}
