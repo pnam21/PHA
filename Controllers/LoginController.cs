@@ -6,10 +6,13 @@ namespace PHA.Controllers
 	public class LoginController : Controller
 	{
 		[Route("login")]
-        public ActionResult LoginPage()
-        {
-            return View("login");
-        }
+
+		[HttpGet]
+		public IActionResult LoginPage()
+		{
+			return View("Login");
+		}
+
 
 
         

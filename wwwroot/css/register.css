@@ -17,8 +17,8 @@ form {
 
 h1, p, b, a {
     text-align: center;
-    color: Green;
-}
+    color: blue;
+
 
 input {
     margin: 0.25em 0em 1em 0em;
