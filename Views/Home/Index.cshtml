@@ -6,3 +6,97 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div class="navbar">
+        <div class="nav-item user-icon" onclick="toggleUserInfo()">👤</div> <!-- Icon hình người -->
+        <div class="user-info" id="userInfo">
+            <h2>Thông tin người dùng</h2>
+            <div class="form-group">
+                <label for="name">Tên:</label>
+                <input type="text" id="name" class="form-control" /><br />
+
+                <label for="age">Tuổi:</label>
+                <input type="number" id="age" class="form-control" /><br />
+
+                <label for="gender">Giới tính:</label>
+                <input type="text" id="gender" class="form-control" /><br />
+
+                <label for="dob">Ngày tháng năm sinh:</label>
+                <input type="date" id="dob" class="form-control" /><br />
+
+                <label for="phone">Số điện thoại:</label>
+                <input type="tel" id="phone" class="form-control" /><br />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" /><br />
+            </div>
+
+            <button id="editButton" class="btn btn-primary" onclick="editInfo()">Chỉnh sửa thông tin</button>
+            <button id="saveButton" class="btn btn-success" onclick="saveInfo()" style="display:none;">Lưu thông tin</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm tải thông tin người dùng từ localStorage
+        function loadUserInfo() {
+            document.getElementById('name').value = localStorage.getItem('name') || 'Nguyễn Văn A';
+            document.getElementById('age').value = localStorage.getItem('age') || '30';
+            document.getElementById('gender').value = localStorage.getItem('gender') || 'Nam';
+            document.getElementById('dob').value = localStorage.getItem('dob') || '1994-01-01';
+            document.getElementById('phone').value = localStorage.getItem('phone') || '0123456789';
+            document.getElementById('email').value = localStorage.getItem('email') || 'nguyenvana@example.com';
+        }
+
+        function toggleUserInfo() {
+            const userInfo = document.getElementById('userInfo');
+            userInfo.style.display = userInfo.style.display === 'block' ? 'none' : 'block'; // Hiện hoặc ẩn bảng thông tin
+        }
+
+        function editInfo() {
+            const inputs = document.querySelectorAll('#userInfo input');
+            inputs.forEach(input => input.disabled = false);
+
+            document.getElementById('editButton').style.display = 'none';
+            document.getElementById('saveButton').style.display = 'inline';
+        }
+
+        function saveInfo() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const dob = document.getElementById('dob').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            localStorage.setItem('name', name);
+            localStorage.setItem('age', age);
+            localStorage.setItem('gender', gender);
+            localStorage.setItem('dob', dob);
+            localStorage.setItem('phone', phone);
+            localStorage.setItem('email', email);
+
+            alert('Thông tin đã được lưu:\n' +
+                'Tên: ' + name + '\n' +
+                'Tuổi: ' + age + '\n' +
+                'Giới tính: ' + gender + '\n' +
+                'Ngày tháng năm sinh: ' + dob + '\n' +
+                'Số điện thoại: ' + phone + '\n' +
+                'Email: ' + email);
+
+            const inputs = document.querySelectorAll('#userInfo input');
+            inputs.forEach(input => input.disabled = true);
+
+            document.getElementById('editButton').style.display = 'inline';
+            document.getElementById('saveButton').style.display = 'none';
+        }
+
+        window.onload = loadUserInfo;
+    </script>
+}
+
