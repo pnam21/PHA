@@ -6,6 +6,7 @@ namespace PHA.Controllers
 	public class LoginController : Controller
 	{
 		[Route("login")]
+
 		[HttpGet]
 		public IActionResult LoginPage()
 		{
@@ -13,8 +14,8 @@ namespace PHA.Controllers
 		}
 
 
-		// Deal with login logic
-		[Route("login")]
+
+        
 		[HttpPost]
 		public IActionResult Login()
 		{ 
