@@ -23,59 +23,55 @@ namespace PHA.Controllers
 {
     public class LoginController : Controller
 
+{
+    private readonly DataContext _context;
+
+    public LoginController(DataContext context)
     {
-        private readonly DataContext _context;
+        _context = context;
+    }
+    [HttpPost]
+    public IActionResult Login(User model)
+    {
+        if (ModelState.IsValid)
+        {
+            // Kiểm tra thông tin đăng nhập trong cơ sở dữ liệu
+            var user = _context.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.Password);
 
-        public LoginController(DataContext context)
-        {
-            _context = context;
-        }
-        [HttpPost]
-        public IActionResult Login(User model)
-        {
-            if (ModelState.IsValid)
+            if (user != null)
             {
-                // Kiểm tra thông tin đăng nhập trong cơ sở dữ liệu
-                var user = _context.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.Password);
-
-                if (user != null)
-                {
-                    // Đăng nhập thành công, thực hiện các hành động cần thiết
-                    // Ví dụ: Lưu thông tin người dùng vào session
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
-
-                }
+                // Đăng nhập thành công, thực hiện các hành động cần thiết
+                // Ví dụ: Lưu thông tin người dùng vào session
+                return RedirectToAction("Index", "Home");
             }
-            return View(model);
+            else
+            {
+                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
+
+            }
         }
+        return View(model);
     }
 
+    
+    
+        [Route("login")]
+
+        [HttpGet]
+        public IActionResult LoginPage()
+        {
+            return View("Login");
+        }
 
 
 
 
-
-
-
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public IActionResult Login(Model.User)
-    //{
-    //    if (Users.IsNullOrEmpty())
-    //    {
-    //        ModelState.AddModelError("", "Email cannot be blank");
-    //        return View();
-    //    }
-    //    if (String.IsNullOrEmpty(Model.Password))
-    //    {
-    //        ModelState.AddModelError("", "Password cannot be blank");
-    //        return View();
-    //    }
-    //}
+        [HttpPost]
+        public IActionResult Login()
+        {
+            return Redirect("home");
+        }
+    }
 }
 
 
