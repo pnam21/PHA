@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 namespace PHA.Controllers
 {
     public class LoginController : Controller
@@ -28,23 +30,54 @@ namespace PHA.Controllers
         {
             _context = context;
         }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Login(User model)
         {
-            if (Users.IsNullOrEmpty())
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Email cannot be blank");
-                return View();
+                // Kiểm tra thông tin đăng nhập trong cơ sở dữ liệu
+                var user = _context.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.Password);
+
+                if (user != null)
+                {
+                    // Đăng nhập thành công, thực hiện các hành động cần thiết
+                    // Ví dụ: Lưu thông tin người dùng vào session
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
+
+                }
             }
-            if (string.IsNullOrEmpty(Password))
-            {
-                ModelState.AddModelError("", "Password cannot be blank");
-                return View();
-            }
+            return View(model);
         }
     }
+
+
+
+
+
+
+
+
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public IActionResult Login(Model.User)
+    //{
+    //    if (Users.IsNullOrEmpty())
+    //    {
+    //        ModelState.AddModelError("", "Email cannot be blank");
+    //        return View();
+    //    }
+    //    if (String.IsNullOrEmpty(Model.Password))
+    //    {
+    //        ModelState.AddModelError("", "Password cannot be blank");
+    //        return View();
+    //    }
+    //}
+}
+
 
 
 
