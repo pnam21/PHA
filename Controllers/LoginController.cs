@@ -30,7 +30,12 @@ namespace PHA.Controllers
     {
         _context = context;
     }
-    [HttpPost]
+        [HttpGet]
+        public IActionResult LoginPage()
+        {
+            return View("Login");
+        }
+        [HttpPost]
     public IActionResult Login(User model)
     {
         if (ModelState.IsValid)
@@ -49,28 +54,10 @@ namespace PHA.Controllers
                 ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
 
             }
-        }
+            }
         return View(model);
     }
 
-    
-    
-        [Route("login")]
-
-        [HttpGet]
-        public IActionResult LoginPage()
-        {
-            return View("Login");
-        }
-
-
-
-
-        [HttpPost]
-        public IActionResult Login()
-        {
-            return Redirect("home");
-        }
     }
 }
 
