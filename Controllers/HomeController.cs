@@ -7,14 +7,20 @@ namespace PHA.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
+            var session = _httpContextAccessor.HttpContext.Session;
+            var fullname = session.GetString("fullname");
+
+            ViewBag.Fullname = fullname;
             return View();
         }
 

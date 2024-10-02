@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,9 +24,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="RegisterPage">Signup</a>
-                        </li>
+                        @if (ViewBag.Fullname != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="#">Hello, @ViewBag.Fullname</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="RegisterPage">Signup</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

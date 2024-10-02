@@ -23,30 +23,32 @@ namespace PHA.Controllers
 {
     public class LoginController : Controller
 
-{
-    private readonly DataContext _context;
-
-    public LoginController(DataContext context)
     {
-        _context = context;
-    }
+        private readonly DataContext _context;
+
+        public LoginController(DataContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult LoginPage()
         {
             return View("Login");
         }
+
         [HttpPost]
-    public IActionResult Login(User model)
-    {
-        if (ModelState.IsValid)
+        public IActionResult Login(User model)
         {
-            // Kiểm tra thông tin đăng nhập trong cơ sở dữ liệu
+
             var user = _context.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.Password);
 
             if (user != null)
             {
-                // Đăng nhập thành công, thực hiện các hành động cần thiết
-                // Ví dụ: Lưu thông tin người dùng vào session
+                HttpContext.Session.SetString("username", user.UserName);
+                HttpContext.Session.SetString("email", user.Email);
+                HttpContext.Session.SetString("fullname", user.FullName);
+
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -54,9 +56,9 @@ namespace PHA.Controllers
                 ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
 
             }
-            }
-        return View(model);
-    }
+
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }
@@ -64,4 +66,4 @@ namespace PHA.Controllers
 
 
 
-            
+
