@@ -47,7 +47,7 @@ namespace PHA.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("LoginPage", "Login");
             }
 
             return View(model);
