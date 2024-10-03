@@ -1,0 +1,35 @@
+﻿:root {
+    --white-color: #fff;
+    --black-color: #000;
+    --text-color: #333;
+    --pink-color: #EBE3F4;
+    --green-color: #90ee90;
+    --border-color: #bdbdbd;
+    --orange-color: rgb(244, 129, 32);
+    --header-color: #F0FFFF;
+    --background-color: #fff4e4;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+.grid {
+    width: 1080px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.grid__full-width {
+    width: 100%;
+}
+
+.grid__row {
+    display: flex;
+    flex-wrap: wrap;
+}

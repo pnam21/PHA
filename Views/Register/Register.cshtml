@@ -11,52 +11,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
-    <link rel="stylesheet" href="~/css/register.css">
 </head>
 
 <body>
-    <form action="Register" method="post" class="form-horizontal" role="form">
-        
-        <h3>PHA_SIGNUP</h3>
-        <div class="form-group">
-            <label for="FullName" class="control-label">Full Name</label>
-            <input type="text" id="FullName" name="FullName" class="form-control" required />
-            <span class="text-danger" id="FullNameError"></span>
-        </div>
+    <form action="Register" method="post" class="body authen-container" role="form">
+        <div class="authen-form">
+            <div class="auth-form__item authen-form__header">
+                <h3>PHA_SIGNUP</h3>
+            </div>
+            
+            <div class="form-group">
+                <label for="FullName" class="control-label">Full Name</label>
+                <input type="text" id="FullName" name="FullName" class="form-control" required />
+                <span class="text-danger" id="FullNameError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="Username" class="control-label">Username</label>
-            <input type="text" id="Username" name="Username" class="form-control" required />
-            <span class="text-danger" id="UsernameError"></span>
-        </div>
+            <div class="form-group">
+                <label for="Username" class="control-label">Username</label>
+                <input type="text" id="Username" name="Username" class="form-control" required />
+                <span class="text-danger" id="UsernameError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="Password" class="control-label">Password</label>
-            <input type="password" id="Password" name="Password" class="form-control" required />
-            <span class="text-danger" id="PasswordError"></span>
-        </div>
+            <div class="form-group">
+                <label for="Password" class="control-label">Password</label>
+                <input type="password" id="Password" name="Password" class="form-control" required />
+                <span class="text-danger" id="PasswordError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="PhoneNumber" class="control-label">Phone Number</label>
-            <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required />
-            <span class="text-danger" id="PhoneNumberError"></span>
-        </div>
+            <div class="form-group">
+                <label for="PhoneNumber" class="control-label">Phone Number</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required />
+                <span class="text-danger" id="PhoneNumberError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="Email" class="control-label">Email</label>
-            <input type="email" id="Email" name="Email" class="form-control" required />
-            <span class="text-danger" id="EmailError"></span>
-        </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">Email</label>
+                <input type="email" id="Email" name="Email" class="form-control" required />
+                <span class="text-danger" id="EmailError"></span>
+            </div>
 
-        <div class="form-group">
-            <input type="submit" value="Sign Up" class="btn btn-primary" />
+            <div class="form-group">
+                <input type="submit" value="Sign Up" class="btn btn-primary" />
+            </div>
+
+            <div>
+                <a href="#">Already have an account? <a asp-controller="Login" asp-action="LoginPage">Log in</a>.</a>
+            </div>
         </div>
     </form>
-    <div>
-
-        <p>Already have an account? <a asp-controller="Login" asp-action="LoginPage">Log in</a>.</p>
-
-    </div>
-
 </body>
 </html>
