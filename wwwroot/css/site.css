@@ -1,18 +1,65 @@
-html {
-  font-size: 14px;
+﻿
+﻿.navbar {
+    background-color: #4B0082; /* Màu tím */
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end; /* Căn phải cho icon */
+    position: fixed; /* Đặt navbar ở vị trí cố định */
+    top: 0; /* Đặt ở trên cùng */
+    right: 0; /* Đặt ở bên phải */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    z-index: 1000; /* Đảm bảo nằm trên các phần tử khác */
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.user-icon {
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 10px; /* Khoảng cách giữa các icon (nếu có nhiều icon) */
+    background-color: #ffffff; /* Màu nền trắng */
+    border: 2px solid #4B0082; /* Đường viền màu tím */
+    border-radius: 50%; /* Bo tròn */
+    padding: 10px; /* Khoảng cách giữa icon và viền */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển đổi */
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .user-icon:hover {
+        background-color: #e6e6e6; /* Màu nền khi hover */
+    }
+
+.user-info {
+    display: none; /* Ẩn bảng thông tin ban đầu */
+    position: fixed; /* Đặt vị trí cố định */
+    top: 50%; /* Đặt giữa theo chiều dọc */
+    left: 50%; /* Đặt giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Dịch chuyển về giữa */
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    border: 1px solid #ccc; /* Viền xung quanh */
+    padding: 30px; /* Khoảng cách bên trong */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2); /* Bóng đổ */
+    z-index: 1000; /* Đưa bảng lên trên cùng */
+    width: 400px; /* Chiều rộng bảng */
+    border-radius: 10px; /* Bo tròn các góc */
+    text-align: left; /* Căn trái cho nội dung */
 }
 
-body {
-  margin-bottom: 60px;
+.form-group {
+    margin-bottom: 15px; /* Khoảng cách giữa các trường */
 }
+
+.form-control {
+    width: 100%; /* Đảm bảo các trường input rộng đầy */
+    padding: 10px; /* Khoảng cách bên trong trường */
+    border: 1px solid #ccc; /* Viền cho trường input */
+    border-radius: 5px; /* Bo tròn các góc cho trường input */
+}
+
+.btn {
+    margin-top: 10px; /* Khoảng cách giữa nút và trường */
+    width: 100%; /* Chiều rộng nút đầy */
+}
+
+
+
+
+
+                                                                                                                        
