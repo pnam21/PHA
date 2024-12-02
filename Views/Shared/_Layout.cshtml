@@ -1,5 +1,4 @@
 ﻿
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,9 +25,8 @@
                         </li>
                         @if (ViewBag.Fullname != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="#">Hello, @ViewBag.Fullname</a>
-                            </li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="CartPage">Cart</a>
+                            <a class="nav-link text-dark" href="#">Hello, @ViewBag.Fullname</a>
                         }
                         else
                         {
